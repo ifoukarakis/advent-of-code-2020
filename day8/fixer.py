@@ -5,12 +5,11 @@ def parse_command(line):
 
 def run(instructions):
     accumulator = 0
-    visited = set()
-    previous = -1
+    visited = list()
     current = 0
     while (current not in visited) and (current < len(instructions)):
         previous = current
-        visited.add(current)
+        visited.append(current)
         command, value = instructions[current]
         if command == 'acc':
             accumulator += value
@@ -20,20 +19,20 @@ def run(instructions):
         elif command == 'nop':
             current += 1
 
-    return accumulator, current in visited
+    return accumulator, visited, current in visited
 
 
 with open('input.txt', 'r') as fp:
     instructions = [parse_command(line) for line in fp.readlines()]
-    accumulator,  is_infinite = run(instructions)
+    accumulator, visited, is_infinite = run(instructions)
     print(f'Accumulator before infinite loop: {accumulator}')
 
-    for i in range(len(instructions)):
+    for i in visited:
         test = list(instructions)
         if test[i][0] == 'jmp':
             test[i] = ('nop', test[i][1])
         elif test[i][0] == 'nop':
             test[i] = ('jmp', test[i][1])
-        acc, is_infinite = run(test)
+        acc, _, is_infinite = run(test)
         if not is_infinite:
             print(acc)
