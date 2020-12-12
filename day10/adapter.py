@@ -1,5 +1,5 @@
 from collections import Counter, defaultdict
-FILENAME = 'example.txt'
+# FILENAME = 'example.txt'
 FILENAME = 'input.txt'
 
 lines = open(FILENAME, 'r').readlines()
